@@ -71,4 +71,28 @@ join rating ra on ra.rid = r.rid
 group by r.name
 having count(r.name)>=3
 
+/*Q9
+0 points (ungraded)
+Some directors directed more than one movie. For all such directors, return the titles of all movies directed by them, along with the director name. Sort by director name, then movie title. (As an extra challenge, try writing the query both with and without COUNT.)*/
+select title, director from movie
+where director in 
+(select m.director from movie m
+group by m.director
+having count(m.title)>1)
+order by director, title
+
+/*Q10
+0 points (ungraded)
+Find the movie(s) with the highest average rating. Return the movie title(s) and average rating. (Hint: This query is more difficult to write in SQLite than other systems; you might think of it as finding the highest average rating and then choosing the movie(s) with that average rating.)*/
+
+
+/*Q11
+0 points (ungraded)
+Find the movie(s) with the lowest average rating. Return the movie title(s) and average rating. (Hint: This query may be more difficult to write in SQLite than other systems; you might think of it as finding the lowest average rating and then choosing the movie(s) with that average rating.)*/
+
+
+/*Q12
+0 points (ungraded)
+For each director, return the director's name together with the title(s) of the movie(s) they directed that received the highest rating among all of their movies, and the value of that rating. Ignore movies whose director is NULL.*/
+
 /**/

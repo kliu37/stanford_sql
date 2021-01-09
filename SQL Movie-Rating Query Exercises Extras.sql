@@ -84,15 +84,26 @@ order by director, title
 /*Q10
 0 points (ungraded)
 Find the movie(s) with the highest average rating. Return the movie title(s) and average rating. (Hint: This query is more difficult to write in SQLite than other systems; you might think of it as finding the highest average rating and then choosing the movie(s) with that average rating.)*/
-
+--Note: When using an aggregate function (sum / count / ... ), you also have to make use of the GROUP BY clause. Next to that, when you want to filter on the result of an aggregate , you cannot do that in the WHERE clause, but you have to do that in the HAVING clause.
+select m.title, avg(r.stars) from movie m
+join rating r on m.mid = r.mid
+group by m.title
+having avg(r.stars) = (
+		select max(avg_rating) from (select avg(stars) as avg_rating from rating group by mid) as avg_table)
 
 /*Q11
 0 points (ungraded)
 Find the movie(s) with the lowest average rating. Return the movie title(s) and average rating. (Hint: This query may be more difficult to write in SQLite than other systems; you might think of it as finding the lowest average rating and then choosing the movie(s) with that average rating.)*/
-
+select m.title, avg(r.stars)
+from movie m join rating r on m.mid = r.mid
+group by m.title
+having avg(r.stars) = (select min(avg_value) from (select avg(stars) as avg_value from rating group by mid) as avg_table)
 
 /*Q12
 0 points (ungraded)
 For each director, return the director's name together with the title(s) of the movie(s) they directed that received the highest rating among all of their movies, and the value of that rating. Ignore movies whose director is NULL.*/
+select m.director, m.title, max(r.stars) 
+from rating r join movie m on r.mid = m.mid 
+where m.director is not NULL 
+group by m.director
 
-/**/

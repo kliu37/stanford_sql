@@ -7,7 +7,16 @@ where grade = 12
 /*Q2
 0/1 points (graded)
 If two students A and B are friends, and A likes B but not vice-versa, remove the Likes tuple.*/
-
+--select all A like B and A and B are friends, and then remove A and B mutually like
+delete from likes
+where id1 in (
+	select l.id1 from likes l
+	join friend f on l.id1 = f.id1 and l.id2 = f.id2
+	except
+	select l1.id1
+	from likes l1 
+	join likes l2 on l1.id1 = l2.id2 and l2.id1 = l1.id2
+	join friend f on l1.id1 = f.id1 and l1.id2 = f.id2)
 
 /*Q3
 0/1 points (graded)
